@@ -1,17 +1,5 @@
 package com.example.farmafacil_v1_3_2;
 
-/*
-import com.google.android.gms.internal.ex;
-
-import android.app.AlertDialog;
-
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.DataSetObserver;
-
-import android.widget.ExpandableListAdapter;
-
-*/
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,7 +41,7 @@ public class ListReceitasActivity extends Activity {
     HashMap<String, List<String>> listDataChild = new HashMap<String, List<String>>();
 	
 	private void initializeUI() {
-		// chama o objeto que cria a Expandable ListView
+		// call object that creates Expandable ListView
 		new GetContacts().execute();
 		
 	}
@@ -162,7 +150,7 @@ public class ListReceitasActivity extends Activity {
     private static final String TAG_DATA = "data";
     private static final String TAG_PRAZO = "prazo";
     private static final String TAG_CONTINUO = "uso_continuo";
-    // farmacias JSONArray
+    // drugstores JSONArray
     JSONArray receitas = null;
  
     
@@ -201,11 +189,11 @@ public class ListReceitasActivity extends Activity {
                     // Getting JSON Array node
                     receitas = jsonObj.getJSONArray(TAG_RECEITAS);
                     
-                    // Loop por todos os remedios encontrados no JSON
+                    // For every medicine foun in the JSON file
                     for (int i = 0; i < receitas.length(); i++) {
-                    	// pega os objetos de remedio
+                    	// Get a medicine object
                         JSONObject c = receitas.getJSONObject(i);
-                        // pega os componentes de cada remédio 
+                        // Get the components of every medicine 
                         String id = c.getString(TAG_ID);
                         String name = c.getString(TAG_NAME);
                         String dosagem = c.getString(TAG_DOSAGEM);
@@ -214,14 +202,12 @@ public class ListReceitasActivity extends Activity {
                         String data = c.getString(TAG_DATA);
                         String continuo = c.getString(TAG_CONTINUO);
                         String frequencia = c.getString(TAG_FREQUENCIA);
-                        
-                        //Log.d("tamanho", String.valueOf(receitas.length()));
                        
-                        // hashmap temporário pra cada remedio
+                        // temp hashmap for a medicine
                         HashMap<String, String> receita = new HashMap<String, String>();
                         
                         
-                        // adiciona os componentes do remédio ao hashmap temp 
+                        // add the components to the hashmap
                         receita.put(TAG_ID, id);
                         receita.put(TAG_NAME, name);
                         receita.put(TAG_DOSAGEM, dosagem);
@@ -231,12 +217,8 @@ public class ListReceitasActivity extends Activity {
                         receita.put(TAG_CONTINUO, continuo);
                         receita.put(TAG_FREQUENCIA, frequencia);
                         
-                        //Adiciona remédio no hashmap que será usado
+                        // add medicine to the list of medicines
                         receitaList.add(receita);
-                        //Log.d("NOME", receitaList.get(i).get(TAG_NAME));
-                        //Log.d("dosagem", receitaList.get(i).get(TAG_DOSAGEM));
-                        //Log.d("USO", receitaList.get(i).get(TAG_USO));
-                        //Log.d("SIZE", String.valueOf(receitas.length()));
                         
                     }
                 } catch (JSONException e) {
@@ -252,31 +234,28 @@ public class ListReceitasActivity extends Activity {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            // Remove o ProgrssDialog
+            // Dismiss ProgrssDialog
             if (pDialog.isShowing())
                 pDialog.dismiss();
             for (int i = 0; i < receitaList.size(); i++) {
-            	// cria o HEADER de um remédio com o nome dele
+            	// creates the header of medicine with its name
             	listDataHeader.add(receitaList.get(i).get(TAG_NAME));
             	
-            	// arrayList temporário com as propriedades dos remédios que serão exibidas (CHILD)
+            	// temp arrayList with the info that will be shown about the medicine (CHILD)
             	List<String> remedio = new ArrayList<String>();
-            	// adiciona as propriedades desejadas 
+            	// add the desire properties 
                 remedio.add("Dosagem: "+receitaList.get(i).get(TAG_DOSAGEM));
                 remedio.add("Frequência: "+receitaList.get(i).get(TAG_FREQUENCIA));
                 remedio.add("Prazo: "+receitaList.get(i).get(TAG_PRAZO)+" dias");
                 remedio.add("Médico: "+receitaList.get(i).get(TAG_MEDICO));
                 remedio.add("Data: "+receitaList.get(i).get(TAG_DATA));
-                //Log.d("NOME", receitaList.get(i).get(TAG_NAME));
-                //Log.d("dosagem", receitaList.get(i).get(TAG_DOSAGEM));
-                //Log.d("USO", receitaList.get(i).get(TAG_USO));
             	
-                //faz a ligacao do CHILD com HEADER
+                // link child CHILD to HEADER
                 listDataChild.put(listDataHeader.get(i), remedio); 
             }
-            //cria expandable listView
+            // creates expandable listView
             ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.expandable_list_view);
-            //chama adapter que mostra a lista
+            // call adapter that shows list above
             expandableListView.setAdapter(new ExpandableListAdapter(ListReceitasActivity.this, listDataHeader, listDataChild));
         }
  

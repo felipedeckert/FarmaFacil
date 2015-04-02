@@ -19,7 +19,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapActivity extends Activity{
 	// Google Map
     private GoogleMap googleMap;
-    //private List<Farmacia> listSelected = new ArrayList<Farmacia>();
  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,18 +55,12 @@ public class MapActivity extends Activity{
                         "Sorry! unable to create maps", Toast.LENGTH_SHORT)
                         .show();
             }
-            /* latitude e longitude (coordenadas da poli)
-            double latitude = -23.554906;
-            double longitude = -46.729734;
-             
-            // criar marcador
-            MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title("Hello Maps ");
-             
-            // adicionar marcador ao mapa
-            googleMap.addMarker(marker);
-            */
-            //-23.558530, -46.729134
             
+			/*
+			* Hardcoded just for presentation, web crawler wasn't getting the location of
+			* the drugstores yet, so this would be the next step: request the location the
+			* same way , medicine prices are requested and save these values
+			*/
             ArrayList <String> latitudes = new ArrayList <String>();
             latitudes.add("-23.610542");
             latitudes.add("-23.583663");
@@ -99,13 +92,13 @@ public class MapActivity extends Activity{
             	  googleMap.addMarker(new MarkerOptions().position(new LatLng(lati,longLat)).title("Surprise"+i));
             }
             
-            /* mover a camera para uma posição específica */
+            /* move camera to a specific position */
             
-            //cria camera
+            // creates camera
             CameraPosition cameraPosition = new CameraPosition.Builder().target(
                     new LatLng(-23.554906, -46.729734)).zoom(12).build();
             
-            //posiciona camera
+            // move camera
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             googleMap.setMyLocationEnabled(true);
         }

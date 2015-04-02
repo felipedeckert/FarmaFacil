@@ -26,27 +26,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-/*
-import com.example.farmafacil_v1_3_2.GetContacts;
-import com.example.farmafacil_v1_3_2.HomeActivity;
-import com.google.gson.JsonObject;
-import com.koushikdutta.ion.Ion;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import android.widget.ListAdapter;
-import android.widget.SimpleAdapter;
-*/
 
 public class BuscaFragment extends Fragment{
 
@@ -74,7 +53,6 @@ public class BuscaFragment extends Fragment{
 					url += URLEncoder.encode(remedio, "UTF-8");
 					nomeRemedio.setText("");
 				} catch (UnsupportedEncodingException e){ 
-					//e.printStackTrace();
 				}
 				buscaMedicamento(v);
 			}
@@ -86,18 +64,14 @@ public class BuscaFragment extends Fragment{
 		new GetContacts().execute();
 	}
 		
-	private ProgressDialog pDialog;
-	 
-    // URL de onde vem o JSON
-    
- 
+	private ProgressDialog pDialog; 
     // JSON Node names
     private static final String TAG_FARMACIAS = "farmacias";
     private static final String TAG_ID = "id";
     private static final String TAG_NAME = "nome";
     private static final String TAG_PRICE = "preco";
  
-    // farmacias JSONArray
+    // drugstores JSONArray
     JSONArray farmacias = null;
     
     /**
@@ -105,9 +79,8 @@ public class BuscaFragment extends Fragment{
      * */
     private class GetContacts extends AsyncTask<Void, Void, Void> {
      
-        // HASH MAP PARA VER O PREÇO MAIS BAIXO ENCONTRADO
+        // temp hashmap for the cheapest price found
         ArrayList<HashMap<String, String>> farmaciaList = new ArrayList<HashMap<String, String>>();
-    	//public String [] f = new String[2];
         @Override
         
         protected void onPreExecute() {
@@ -125,15 +98,15 @@ public class BuscaFragment extends Fragment{
             // Creating service handler class instance
             ServiceHandler sh = new ServiceHandler();
  
-            // FAZ UMA REQUISIÇÃO E PEGA A RESPOSTA
+            // request and get the answer from server
             String jsonStr = sh.makeServiceCall(url, ServiceHandler.GET);
             
             /*- 
              * 
-             * PRINTA NO LOG CAT CADA LINHA DO JSON 
+             * PRINT the log, just to verify correctness 
              * 
              * -*/
-            Log.d("Response: ", "> " + jsonStr);
+            //Log.d("Response: ", "> " + jsonStr);
             url = "http://farmafacil.leorocha.com/remedios/preco?nome=";
  
             if (jsonStr != null) {
@@ -149,23 +122,12 @@ public class BuscaFragment extends Fragment{
                         
                         String id = c.getString(TAG_ID);
                         String name = c.getString(TAG_NAME);
-                        //f[i] = name;
                         String price = c.getString(TAG_PRICE);
                         
-                        /*- 
-                         * 
-                         * PRINTA NO LOG CAT O QUE ACABOU DE SER PEGO DO OBJETO JSON 
-                         * 
-                         * -*/
-                        //Log.d("ID", id);
-                        //Log.d("NAME", name);
-                        //Log.d("PRICE", price);
-                        //Log.d("FARMACIAS", String.valueOf(farmacias.length()));
-                        
-                        // hashmap temporário pra receber uma farmácia
+                        // Temp Hashmap to receive a new drugstore
                         HashMap<String, String> farmacia = new HashMap<String, String>();
                         
-                        // Colocando os atributos da farmacia no hashmap temp (CHILD)
+                        // Put the drugstore attributes in its hashmap (CHILD)
                      
                         farmacia.put(TAG_ID, id);
                         farmacia.put(TAG_NAME, name);
@@ -192,13 +154,9 @@ public class BuscaFragment extends Fragment{
                 pDialog.dismiss();
             
             AlertDialog dialog;
-    		//following code will be in your activity.java file 
-    		//final String[] items = f;//{getString(R.string.drogasil), getString(R.string.droga_raia), getString(R.string.drogaria_onofre), getString(R.string.drogaria_sao_paulo)};
-    		// arraylist to keep the selected items
-    		//final ArrayList selectedItems = new ArrayList();
 
     		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-    		//Se o preço encontrado for maior que zero, exiba-o e mostre opção de mostrar no mapa
+    		// If the price found is greater than zero, medicine exists, show price and option to show map
     		if(farmaciaList.get(0).get(TAG_ID) != "null" && Double.parseDouble(farmaciaList.get(0).get(TAG_PRICE)) > 0){
     			builder.setTitle(R.string.escolha_as_farmacias);
     			builder.setMessage(farmaciaList.get(0).get(TAG_NAME)+"\n"+"Melhor preço encontrado: R$"+farmaciaList.get(0).get(TAG_PRICE))
@@ -206,12 +164,9 @@ public class BuscaFragment extends Fragment{
     			.setPositiveButton("Mostrar", new DialogInterface.OnClickListener() {
     			@Override
     				public void onClick(DialogInterface dialog, int id) {
-    					//  Your code when user clicked on Mostrar
-    				
+						// Call intent to open google maps app
     					Intent intent = new Intent(getActivity(), MapActivity.class);
-	    				//intent.putExtra("selectedItems", selectedItems);
-	    				startActivity(intent);
-	    				//finish();    		                    
+	    				startActivity(intent);   		                    
 	    			}
 	    		})
 	    		.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -220,7 +175,7 @@ public class BuscaFragment extends Fragment{
 	    				//  Your code when user clicked on Cancelar
 	    			}
 	    		});
-    		//se preço <= zero, então remédio não encontrado, mostrar aviso.
+    		// If price <= zero, medicine not found, show warning.
     		}else{
     		
     			builder.setTitle("Medicamento não encontrado");
@@ -230,6 +185,7 @@ public class BuscaFragment extends Fragment{
 	    			@Override
 	    			public void onClick(DialogInterface dialog, int id) {
 	    				//  Your code when user clicked on OK
+						//  Just dismiss warning
 	    			}
 	    		});
     		}	
