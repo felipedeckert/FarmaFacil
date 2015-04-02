@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Farma Fácil</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="escolha_as_farmacias">Escolha as farmácias que deseja ver no mapa:</string>
+    <string name="drogasil">" Drogasil "</string>
+    <string name="droga_raia">Droga Raia</string>
+    <string name="drogaria_onofre">Drogaria Onofre</string>
+    <string name="drogaria_sao_paulo">Drogaria São Paulo</string>
+    <string name="busca">Busca</string>
+    <string name="receitas">Receitas</string>
+    <string name="title_activity_list_receitas">Lista de Receitas</string>
+
+</resources>

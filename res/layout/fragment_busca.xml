@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#B6F2FF"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:gravity="center_horizontal|center_vertical"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="220dp"
+        android:layout_height="120dp"
+        android:src="@drawable/busca_medicamentos" />
+
+    <EditText
+        android:id="@+id/txt_busca"
+        android:layout_width="240dp"
+        android:layout_height="33dp"
+        android:ems="10"
+        android:hint="Ex: Neosaldina" />
+
+    <Button
+        android:id="@+id/bt_buscar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Buscar" 
+        android:focusable="true" />
+ 
+</LinearLayout>
